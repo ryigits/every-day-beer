@@ -153,15 +153,12 @@
 
     // Set up the UI
     var sigText = document.getElementById("sig-dataUrl");
-    var sigImage = document.getElementById("sig-image");
     var submitBtn = document.getElementById("sig-submitBtn");
     submitBtn.addEventListener(
-        "mousedown",
+        "click",
         function (e) {
             var dataUrl = canvas.toDataURL();
-            // database e yaz data url i
             sigText.value=dataUrl;
-            console.log(dataUrl);
         },
         false
     );

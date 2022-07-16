@@ -46,4 +46,14 @@ app.post("/", (req, res) => {
     }
 });
 
-// console.log(db.getAllSignatures().then(result=>console.log(result)));
+app.use(function (req, res, next) {
+    db.getAllSignatures().then((result) => {
+        res.json(result.rows);
+    });
+    next();
+});
+
+app.get("/list", (req, res) => {
+    res.render("list",{
+    });
+});
