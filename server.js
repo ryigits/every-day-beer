@@ -25,7 +25,8 @@ app.post("/", (req, res) => {
             showError: true,
         });
     } else {
-        setTimeout(() => { // need time to dataurl
+        setTimeout(() => {
+            // need time to dataurl
             db.addPetition(req.body.fname, req.body.lname, req.body.url)
                 .then(() => {
                     console.log("recording done");
