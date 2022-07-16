@@ -9,26 +9,22 @@ app.engine("handlebars", hb.engine());
 app.set("view engine", "handlebars");
 
 app.use(express.static("./public"));
-// app.use(express.static("./petition"));
-// app.use(express.static("./thanks"));
-// app.use(express.static("./signatures"));
+
 app.use(
     express.urlencoded({
         extended: false,
     })
 );
 app.get("/", (req, res) => {
-    res.render("petition", {
-
-    });
+    res.render("petition", {});
 });
 
 app.post("/", (req, res) => {
-    const fname = req.body.fname;
-    const lname = req.body.lname;
-    res.render("thanks", {
-        fname,
-        lname
-    });
+    setTimeout(() => {
+        db.addPetition(req.body.fname, req.body.lname, req.body.url).then(
+            () => {
+                console.log("recording done");
+            }
+        );
+    }, 1500);
 });
-
