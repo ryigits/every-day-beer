@@ -1,3 +1,10 @@
-{{#listOfAll}}
-{{id}}
-{{/listOfAll}}
+{{#list}}
+<div id="{{id}}" class="person">
+<div class="name">First Name:</div>{{first}}
+<div class="name">Last Name:</div>{{last}}
+<div class="signature">Signature:</div>
+<img src="{{signature}}">
+</div>
+{{/list}}
+
+<a href="/">Back</a>

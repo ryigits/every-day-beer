@@ -25,11 +25,12 @@ app.post("/", (req, res) => {
             showError: true,
         });
     } else {
-        setTimeout(() => {
+        setTimeout(() => { // need time to dataurl
             db.addPetition(req.body.fname, req.body.lname, req.body.url)
                 .then(() => {
                     console.log("recording done");
                     res.render("thanks", {
+                        layout: "list",
                         fname: req.body.fname,
                         lname: req.body.lname,
                         signature: req.body.url,
@@ -42,18 +43,21 @@ app.post("/", (req, res) => {
                         showDbError: true,
                     });
                 });
-        }, 1500);
+        }, 500);
     }
 });
 
-app.use(function (req, res, next) {
-    db.getAllSignatures().then((result) => {
-        res.json(result.rows);
-    });
-    next();
-});
-
 app.get("/list", (req, res) => {
-    res.render("list",{
-    });
+    db.getAllSignatures()
+        .then((result) => result.rows)
+        .then((result) => {
+            res.render("list", {
+                layout: "list",
+                list: result,
+            });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.statusCode(500).end();
+        });
 });

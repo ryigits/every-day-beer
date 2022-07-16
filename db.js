@@ -19,5 +19,5 @@ module.exports.getSignature = (fname, lname) => {
 };
 
 module.exports.getAllSignatures = () => {
-    return db.query(`SELECT *FROM signatures`);
+    return db.query(`SELECT * FROM signatures`);
 };

@@ -1,0 +1,44 @@
+* {
+    background-color: antiquewhite;
+    box-sizing: border-box;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+}
+
+.person {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 10px;
+}
+
+img {
+   object-fit: contain;
+   max-width: 30%;
+   max-height: 30%;
+   width: auto;
+   height: auto;
+}
+
+.name{
+  font-size: large;
+  color: red;
+  margin: 15px;
+}
+
+.signature{
+  font-size: large;
+  color: goldenrod;
+  margin: 15px;
+}
+
+h1{
+  color: blueviolet;
+  font-size: x-large;
+}
+
+#list {
+  text-decoration: solid;
+  font-size: large;
+  color:darkorange
+}
