@@ -3,5 +3,11 @@
   <input type="text" id="fname" name="fname"><br>
   <label for="lname">Last name:</label><br>
   <input type="text" id="lname" name="lname"><br><br>
-    {{>signature}}
-</form>
+  {{>signature}}
+ </form>
+  {{#if showError}}
+  <h1 id="error">you should write your name or last name</h1>
+  {{/if}}
+{{#if showDbError}}
+  <h1 id="dberror">Database error</h1>
+  {{/if}}

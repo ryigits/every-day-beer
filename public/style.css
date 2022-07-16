@@ -16,3 +16,7 @@ body {
 #sig-dataUrl{
   display: none;
 }
+
+#error{
+  color:red
+}

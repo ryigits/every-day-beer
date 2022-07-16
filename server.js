@@ -20,11 +20,30 @@ app.get("/", (req, res) => {
 });
 
 app.post("/", (req, res) => {
-    setTimeout(() => {
-        db.addPetition(req.body.fname, req.body.lname, req.body.url).then(
-            () => {
-                console.log("recording done");
-            }
-        );
-    }, 1500);
+    if (req.body.fname == "" || req.body.lname == "") {
+        res.render("petition", {
+            showError: true,
+        });
+    } else {
+        setTimeout(() => {
+            db.addPetition(req.body.fname, req.body.lname, req.body.url)
+                .then(() => {
+                    console.log("recording done");
+                    res.render("thanks", {
+                        fname: req.body.fname,
+                        lname: req.body.lname,
+                        signature: req.body.url,
+                    });
+                })
+                .catch((err) => {
+                    console.log("database error", err);
+                    res.sendStatus(500);
+                    res.render("petition", {
+                        showDbError: true,
+                    });
+                });
+        }, 1500);
+    }
 });
+
+// console.log(db.getAllSignatures().then(result=>console.log(result)));
