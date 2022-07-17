@@ -1,12 +1,12 @@
 const spicedPg = require("spiced-pg");
 const db = spicedPg("postgres:postgres:postgres@localhost:5432/ryigit");
 
-module.exports.addPetition = (fname, lname, url) => {
+module.exports.addPetition = (fname, lname, url,timestamp) => {
     return db.query(
         `
-        INSERT INTO signatures(first,last,signature)
-        VALUES ($1,$2,$3)`,
-        [fname, lname, url]
+        INSERT INTO signatures(first,last,signature,date)
+        VALUES ($1,$2,$3,$4)`,
+        [fname, lname, url,timestamp]
     );
 };
 

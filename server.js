@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 8080;
+const moment = require("moment");
 const hb = require("express-handlebars");
 const db = require("./db");
 app.listen(port, () => console.log(`petition listening on port ${port}!`));
@@ -15,21 +16,22 @@ app.use(
         extended: false,
     })
 );
+
+
 app.get("/", (req, res) => {
     res.render("petition", {});
 });
 
 app.post("/", (req, res) => {
-    if (req.body.fname == "" || req.body.lname == "") {
+    if (!req.body.fname || !req.body.lname) {
         res.render("petition", {
             showError: true,
         });
     } else {
         setTimeout(() => {
-            // need time to dataurl
-            db.addPetition(req.body.fname, req.body.lname, req.body.url)
+            let date = moment().format();
+            db.addPetition(req.body.fname, req.body.lname, req.body.url, date)
                 .then(() => {
-                    console.log("recording done");
                     res.render("thanks", {
                         layout: "list",
                         fname: req.body.fname,
