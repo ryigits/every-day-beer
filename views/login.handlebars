@@ -1,0 +1,15 @@
+  <form method="POST">
+  <label for="email">E-Mail</label><br>
+  <input type="text" id="email" name="email"><br>
+  <label for="password">Password</label><br>
+  <input type="password" id="password" name="password"><br><br>	
+  <button class="btn" id="btn">Submit</button>
+  </form>
+
+  {{#if showBlankError}}
+  <h3 id="error">Err:dont leave blank</h3>
+  {{/if}}
+
+  {{#if doesNotMatch}}
+    <h3 id="error">Err:password or email does not match</h3>
+{{/if}}
