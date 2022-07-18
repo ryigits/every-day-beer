@@ -5,10 +5,17 @@ const moment = require("moment");
 const hb = require("express-handlebars");
 const db = require("./db");
 app.listen(port, () => console.log(`petition listening on port ${port}!`));
+const cookieSession = require("cookie-session");
+app.use(
+    cookieSession({
+        secret: `Hungry`,
+        maxAge: 1000 * 60 * 60 * 24 * 14,
+    })
+);
+
 app.use(express.static("./public"));
 app.engine("handlebars", hb.engine());
 app.set("view engine", "handlebars");
-
 app.use(express.static("./public"));
 
 app.use(
@@ -17,27 +24,41 @@ app.use(
     })
 );
 
-
 app.get("/", (req, res) => {
-    res.render("petition", {});
+    if (req.session.signatureId) {
+        db.getAllSignaturesById(req.session.signatureId).then((result) => {
+            res.render("home", {
+                signed: true,
+                result: result.rows[0],
+            });
+        });
+    } else {
+        res.render("home", {
+            signed: false,
+        });
+    }
 });
 
 app.post("/", (req, res) => {
+    if (req.session.signatureId) return res.redirect("/");
     if (!req.body.fname || !req.body.lname) {
-        res.render("petition", {
+        res.render("home", {
             showError: true,
         });
     } else {
         setTimeout(() => {
             let date = moment().format();
             db.addPetition(req.body.fname, req.body.lname, req.body.url, date)
-                .then(() => {
+                .then((result) => {
                     res.render("thanks", {
-                        layout: "list",
                         fname: req.body.fname,
                         lname: req.body.lname,
                         signature: req.body.url,
                     });
+                    return result.rows;
+                })
+                .then((result) => {
+                    req.session.signatureId = result[0].id;
                 })
                 .catch((err) => {
                     console.log("database error", err);
@@ -57,10 +78,19 @@ app.get("/list", (req, res) => {
             res.render("list", {
                 layout: "list",
                 list: result,
+                totalNumber: result.length,
             });
         })
         .catch((err) => {
             console.log(err);
             res.statusCode(500).end();
         });
+});
+
+app.get("/logout", (req, res) => {
+    if (req.session.signatureId) {
+        req.session = null;
+        res.statusCode = 205;
+        res.redirect("/");
+    }
 });

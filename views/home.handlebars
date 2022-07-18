@@ -1,4 +1,17 @@
 <img src="./beer.jpg" width="350px" height="300px">
+{{#if signed}}
+{{#result}}
+Thanks for signed on {{date}}
+<div id="{{id}}" class="person">
+<div class="name">First Name:</div>{{first}}
+<div class="name">Last Name:</div>{{last}}
+<div class="signature">Signature:</div>
+<img src="{{signature}}">
+</div>
+<a class="name" href="/logout">Logout</a>
+{{/result}}
+
+{{else}}
 <h1>Not only FRIDAY but also EVERYDAY</h1>
 <form method="POST">
   <label for="fname">First name:</label><br>
@@ -7,6 +20,9 @@
   <input type="text" id="lname" name="lname"><br><br>
   {{>signature}}
  </form>
+  <script src="/script.js"></script>
+ {{/if}}
+
   {{#if showError}}
   <h1 id="error">you should write your name or last name</h1>
   {{/if}}

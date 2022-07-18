@@ -10,25 +10,52 @@ body {
     flex-direction: column;
     align-items: center;
 }
-h1{
-  color: peru;
+h1 {
+    color: peru;
 }
 #sig-canvas {
-  border: 2px dotted #CCCCCC;
-  border-radius: 15px;
-  cursor: crosshair;
+    border: 2px dotted #cccccc;
+    border-radius: 15px;
+    cursor: crosshair;
 }
 
-#sig-dataUrl{
-  display: none;
+#sig-dataUrl {
+    display: none;
 }
 
-#error{
-  color:red
+#error {
+    color: red;
 }
 
 #list {
-  text-decoration: solid;
-  font-size: large;
-  color:darkorange
+    text-decoration: solid;
+    font-size: large;
+    color: darkorange;
+}
+
+.person {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 10px;
+}
+
+img {
+    object-fit: contain;
+    max-width: 30%;
+    max-height: 30%;
+    width: auto;
+    height: auto;
+}
+
+.name {
+    font-size: large;
+    color: red;
+    margin: 15px;
+}
+
+.signature {
+    font-size: large;
+    color: goldenrod;
+    margin: 15px;
 }
