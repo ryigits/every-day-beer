@@ -29,3 +29,12 @@ module.exports.getSignaturesById = (id) => {
         [id]
     );
 };
+
+module.exports.addSignature = (id, url) => {
+    return db.query(
+        `
+        INSERT INTO signatures(id,url)
+        VALUES ($1,$2) RETURNING url`,
+        [id, url]
+    );
+};

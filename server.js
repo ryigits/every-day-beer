@@ -29,7 +29,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-    if (req.session.signatureId) {
+    if (req.session.signatureId && req.session.signed) {
         db.getAllSignatures()
             .then((result) => result.rows)
             .then((result) => {
@@ -40,44 +40,66 @@ app.get("/", (req, res) => {
                 res.statusCode(500).end();
             });
         db.getSignaturesById(req.session.signatureId).then((result) => {
-            return res.render("home", {
-                list: req.session.list,
-                totalNumber: req.session.list.length,
-                signed: true,
+            res.render("thanks", {
+                logged: true,
                 result: result.rows[0],
+                totalNumber: req.session.list.length,
             });
         });
+    } else if (req.session.signatureId && !req.session.signed) {
+        res.redirect(302, "/petition");
     } else {
         res.render("home", {
-            signed: false,
+            logged: false,
         });
     }
 });
 
 app.get("/petition", (req, res) => {
-    if (!req.session.signatureId) return res.redirect(302, "/");
-    if (req.session.signatureId) {
+    if (req.session.signatureId && req.session.signed) {
         db.getAllSignatures()
             .then((result) => result.rows)
             .then((result) => {
-                db.getSignaturesById(req.session.signatureId).then((member) => {
-                    res.render("petition", {
-                        signed: true,
-                        totalNumber: result.length,
-                        member: member.rows[0],
-                    });
-                });
+                return (req.session.list = result);
             })
             .catch((err) => {
                 console.log(err);
                 res.statusCode(500).end();
             });
+        db.getSignaturesById(req.session.signatureId).then((result) => {
+            res.render("thanks", {
+                logged: true,
+                result: result.rows[0],
+                totalNumber: req.session.list.length,
+            });
+        });
+    } else {
+        db.getAllSignatures()
+            .then((result) => result.rows)
+            .then((result) => {
+                return (req.session.list = result);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.statusCode(500).end();
+            });
+        db.getSignaturesById(req.session.signatureId).then((result) => {
+            res.render("petition", {
+                logged: true,
+                result: result.rows[0],
+                totalNumber: req.session.list.length,
+            });
+        });
     }
 });
 
 app.get("/login", (req, res) => {
     if (req.session.signatureId) return res.redirect("/");
-    res.render("login", {});
+    if (req.session.signed) {
+        res.render("thanks", {});
+    } else {
+        res.render("login", {});
+    }
 });
 
 app.post("/login", (req, res) => {
@@ -97,6 +119,7 @@ app.post("/login", (req, res) => {
                 .compare(req.body.password, hash)
                 .then((result) => {
                     if (result) {
+                        req.session.signed = false;
                         return res.redirect("/petition");
                     } else {
                         return res.render("login", {
@@ -109,11 +132,13 @@ app.post("/login", (req, res) => {
                 });
             return result.rows[0].id;
         })
-        .then((id) => (req.session.signatureId = id));
+        .then((id) => {
+            req.session.signed = false;
+            req.session.signatureId = id;
+        });
 });
 
 app.post("/", (req, res) => {
-    if (req.session.signatureId) return res.redirect("/");
     if (!req.body.fname || !req.body.lname)
         return res.render("home", {
             showBlankError: true,
@@ -127,11 +152,11 @@ app.post("/", (req, res) => {
     bcrypt.hash(req.body.password).then((password) => {
         db.addMember(req.body.fname, req.body.lname, password, date, email)
             .then((result) => {
-                res.redirect("/petition");
                 return result.rows;
             })
             .then((result) => {
                 req.session.signatureId = result[0].id;
+                res.redirect("/petition");
             })
             .catch((err) => {
                 console.log("database error", err);
@@ -144,19 +169,42 @@ app.post("/", (req, res) => {
 });
 
 app.post("/petition", (req, res) => {
-    // save signature into another database
-    res.render("thanks", {});
+    if (req.session.signatureId && !req.session.signed) {
+        setTimeout(() => {
+            db.addSignature(req.session.signatureId, req.body.url).then(
+                (url) => {
+                    req.session.signed = true;
+                    res.render("thanks", {
+                        url: url.rows[0].url,
+                        logged: true,
+                    });
+                }
+            );
+        }, 500);
+    }
 });
 
 app.get("/list", (req, res) => {
     if (!req.session.signatureId) return res.redirect(302, "/");
-    db.getAllSignatures().then((result) => {
-        res.render("list", {
-            list: result.rows,
-            totalNumber: result.rows.length,
-            signed: true,
+    if (req.session.signatureId) {
+        db.getAllSignatures()
+            .then((result) => result.rows)
+            .then((result) => {
+                return (req.session.list = result);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.statusCode(500).end();
+            });
+        db.getSignaturesById(req.session.signatureId).then((result) => {
+            res.render("list", {
+                list: req.session.list,
+                logged: true,
+                result: result.rows[0],
+                totalNumber: req.session.list.length,
+            });
         });
-    });
+    }
 });
 
 app.get("/logout", (req, res) => {

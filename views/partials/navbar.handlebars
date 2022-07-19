@@ -1,9 +1,9 @@
-{{#unless signed}}
+{{#unless logged}}
 <a href="/login">Login</a>
 {{/unless}}
 <a href="/petition">Petition</a>
 <a href="/list">List</a>
-{{#if signed}}
+<a href="/">Home</a>
+{{#if logged}}
 <a href="/logout">Logout</a>
 {{/if}}
-<a href="/">Home Page</a>

@@ -10,9 +10,8 @@
     grid-template-columns: 0.4fr 2.1fr 0.5fr;
     grid-template-rows: 0.5fr 1.3fr 0.7fr;
     gap: 1px 2px;
-    grid-auto-flow: row;
     grid-template-areas:
-        "logo Banner ."
+        "logo Banner logged"
         "navbar main signed"
         ". footer .";
 }
@@ -68,6 +67,9 @@
     font-size: 20px;
     text-decoration: none;
     color: firebrick;
+}
+.logged {
+    grid-area: logged;
 }
 
 #sig-canvas {
