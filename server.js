@@ -73,7 +73,7 @@ app.get("/petition", (req, res) => {
                 totalNumber: req.session.list.length,
             });
         });
-    } else {
+    } else if (req.session.signatureId) {
         db.getAllSignatures()
             .then((result) => result.rows)
             .then((result) => {
@@ -90,6 +90,8 @@ app.get("/petition", (req, res) => {
                 totalNumber: req.session.list.length,
             });
         });
+    }else{
+        res.redirect(302,"/");
     }
 });
 
@@ -114,6 +116,7 @@ app.post("/login", (req, res) => {
                 return res.render("login", {
                     doesNotMatch: true,
                 });
+            req.session.name=result.rows[0].name;
             const hash = result.rows[0].password;
             bcrypt
                 .compare(req.body.password, hash)
