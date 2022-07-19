@@ -4,16 +4,74 @@
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
         "Lucida Sans", Arial, sans-serif;
 }
-body {
-    text-align: center;
+
+.container {
+    display: grid;
+    grid-template-columns: 0.4fr 2.1fr 0.5fr;
+    grid-template-rows: 0.5fr 1.3fr 0.7fr;
+    gap: 1px 2px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "logo Banner ."
+        "navbar main signed"
+        ". footer .";
+}
+
+.main {
+    grid-area: main;
+}
+
+.logo {
+    grid-area: logo;
+}
+
+.footer {
+    grid-area: footer;
+}
+
+.Banner {
+    grid-area: Banner;
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.navbar {
+    grid-area: navbar;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.navbar a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    margin: 20px;
+    text-align: left;
+    font-size: 20px;
+    text-decoration: none;
+    color: firebrick;
 }
-h1 {
-    color: peru;
+
+.signed {
+    grid-area: signed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    text-align: left;
+    font-size: 20px;
+    text-decoration: none;
+    color: firebrick;
 }
+
 #sig-canvas {
+    display: flex;
     border: 2px dotted #cccccc;
     border-radius: 15px;
     cursor: crosshair;
@@ -21,41 +79,4 @@ h1 {
 
 #sig-dataUrl {
     display: none;
-}
-
-#error {
-    color: red;
-}
-
-#list {
-    text-decoration: solid;
-    font-size: large;
-    color: darkorange;
-}
-
-.person {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    padding: 10px;
-}
-
-img {
-    object-fit: contain;
-    max-width: 30%;
-    max-height: 30%;
-    width: auto;
-    height: auto;
-}
-
-.name {
-    font-size: large;
-    color: red;
-    margin: 15px;
-}
-
-.signature {
-    font-size: large;
-    color: goldenrod;
-    margin: 15px;
 }
