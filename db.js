@@ -10,11 +10,11 @@ module.exports.addMember = (name, lname, password, date, email) => {
     );
 };
 
-module.exports.getAllSignatures = () => {
+module.exports.getAllMembers = () => {
     return db.query(`SELECT * FROM members`);
 };
 
-module.exports.getSignaturesByEmail = (email) => {
+module.exports.getMembersByEmail = (email) => {
     return db.query(
         `
         SELECT * FROM members WHERE email=$1`,
@@ -22,7 +22,7 @@ module.exports.getSignaturesByEmail = (email) => {
     );
 };
 
-module.exports.getSignaturesById = (id) => {
+module.exports.getMembersById = (id) => {
     return db.query(
         `
         SELECT * FROM members WHERE id=$1`,
@@ -36,5 +36,12 @@ module.exports.addSignature = (id, url) => {
         INSERT INTO signatures(id,url)
         VALUES ($1,$2) RETURNING url`,
         [id, url]
+    );
+};
+
+module.exports.getAllSignatures = () => {
+    return db.query(
+        `
+        SELECT * FROM signatures`
     );
 };

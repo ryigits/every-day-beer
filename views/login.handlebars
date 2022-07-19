@@ -3,7 +3,9 @@
   <input type="password" id="password" placeholder="Password" name="password"><br><br>	
   <button class="btn" id="btn">Submit</button>
   </form>
-
+{{#if logAgain}}
+  <h3 id="error">Please log in again</h3>
+  {{/if}}
   {{#if showBlankError}}
   <h3 id="error">Err:dont leave blank</h3>
   {{/if}}
