@@ -1,23 +1,23 @@
 const spicedPg = require("spiced-pg");
 const db = spicedPg("postgres:postgres:postgres@localhost:5432/ryigit");
 
-module.exports.addMember = (name, lname, password, date, email) => {
+module.exports.addMember = (first_name, last_name, email, password) => {
     return db.query(
         `
-        INSERT INTO members(name,lname,password,date,email)
-        VALUES ($1,$2,$3,$4,$5) RETURNING id`,
-        [name, lname, password, date, email]
+        INSERT INTO users(first_name,last_name,email,password_hash)
+        VALUES ($1,$2,$3,$4) RETURNING id`,
+        [first_name, last_name, email, password]
     );
 };
 
 module.exports.getAllMembers = () => {
-    return db.query(`SELECT * FROM members`);
+    return db.query(`SELECT * FROM users`);
 };
 
 module.exports.getMembersByEmail = (email) => {
     return db.query(
         `
-        SELECT * FROM members WHERE email=$1`,
+        SELECT * FROM users WHERE email=$1`,
         [email]
     );
 };
@@ -25,17 +25,17 @@ module.exports.getMembersByEmail = (email) => {
 module.exports.getMembersById = (id) => {
     return db.query(
         `
-        SELECT * FROM members WHERE id=$1`,
+        SELECT * FROM users WHERE id=$1`,
         [id]
     );
 };
 
-module.exports.addSignature = (id, url) => {
+module.exports.addSignature = (user_id, url) => {
     return db.query(
         `
-        INSERT INTO signatures(id,url)
-        VALUES ($1,$2) RETURNING url`,
-        [id, url]
+        INSERT INTO signatures(user_id,signature)
+        VALUES ($1,$2) RETURNING signature`,
+        [user_id, url]
     );
 };
 
@@ -43,5 +43,13 @@ module.exports.getAllSignatures = () => {
     return db.query(
         `
         SELECT * FROM signatures`
+    );
+};
+
+module.exports.getSignature = (id) => {
+    return db.query(
+        `
+        SELECT * FROM signatures WHERE user_id=$1`,
+        [id]
     );
 };
