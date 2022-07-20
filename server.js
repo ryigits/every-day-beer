@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
 const port = 8080;
-const helmet = require("helmet");
+
 const moment = require("moment");
 const hb = require("express-handlebars");
 const db = require("./db");
 const bcrypt = require("./bcrypt");
 app.listen(port, () => console.log(`petition listening on port ${port}!`));
-app.use(helmet());
+
 const cookieSession = require("cookie-session");
 app.use(
     cookieSession({

@@ -1,8 +1,15 @@
-  <form method="POST">
-  <input type="email" id="email" placeholder="E-Mail" name="email"><br>
-  <input type="password" id="password" placeholder="Password" name="password"><br><br>	
-  <button class="btn" id="btn">Submit</button>
-  </form>
+<form method="POST">
+<div class="form">
+      <div class="subtitle">Please Login</div>
+      <div class="input-container ic1">
+        <input name="email" class="input" type="email" placeholder="Email" />
+      </div>
+      <div class="input-container ic1">
+        <input name="password" class="input" type="password" placeholder="Password" />
+      </div>
+      <button type="text" class="submit">Login</button>
+    </div>
+    </form>
 {{#if logAgain}}
   <h3 id="error">Please log in again</h3>
   {{/if}}

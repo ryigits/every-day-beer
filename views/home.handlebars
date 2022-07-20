@@ -1,15 +1,19 @@
 {{#unless logged}}
-<form method="POST">
-  <input type="text" placeholder="First Name" id="fname" name="fname"><br>
+<form class="form" method="POST">
+  <div class="subtitle">Please Register First</div>
+  <div class="input-container ic1">
+  <input type="text" placeholder="First Name" id="fname" class="input" name="fname"><br>
  
-  <input type="text" id="lname" placeholder="Last Name" name="lname"><br>
+  <input class="input" type="text" id="lname" placeholder="Last Name" name="lname"><br>
 
-  <input type="email" id="email" placeholder="E-Mail" name="email"><br>
+  <input  class="input" type="email" id="email" placeholder="E-Mail" name="email"><br>
 
-  <input type="password" id="password" placeholder="password" name="password"><br>
+  <input  class="input" type="password" id="password" placeholder="password" name="password"><br>
 
-  <input type="password" id="repassword" placeholder="re password" name="repassword"><br><br>
-  <button class="btn" id="btn">Register</button>
+  <input  class="input" type="password" id="repassword" placeholder="re password" name="repassword"><br><br>
+ 
+  <button class="submit" id="btn">Register</button>
+   </div>
  </form>
  {{/unless}}
   {{#if showPasswordError}}
