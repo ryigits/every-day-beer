@@ -27,3 +27,6 @@ CREATE TABLE profiles (
     user_id INTEGER NOT NULL UNIQUE REFERENCES users(id),
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
+
+
+SELECT profiles.user_id, profiles.city,profiles.age ,users.first_name,users.last_name,password_hash,signatures.signature FROM profiles LEFT OUTER JOIN signatures ON profiles.user_id=signatures.user_id LEFT OUTER JOIN users ON profiles.user_id=users.id WHERE profiles.user_id=1;

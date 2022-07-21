@@ -16,7 +16,7 @@
     display: none;
 }
 
-.container{
+.container {
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 0.1fr 0.05fr 1fr;
@@ -46,6 +46,7 @@
     grid-column-start:2;
     grid-column-end: 3;
     margin-top: 20%;
+    position: relative;
 }
 
 .links a{
@@ -84,13 +85,9 @@
 }
 
 .input-container {
-    height: 50px;
+    height: 60px;
     position: relative;
     width: 100%;
-}
-
-.ic1 {
-    margin-top: 40px;
 }
 
 .input {
@@ -127,7 +124,7 @@
     cursor: pointer;
     font-size: 18px;
     height: 50px;
-    margin-top: 38px;
+
     outline: 0;
     text-align: center;
     width: 100%;

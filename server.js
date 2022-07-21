@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
 const port = 8080;
-
-const moment = require("moment");
 const hb = require("express-handlebars");
 const db = require("./db");
 const bcrypt = require("./bcrypt");
@@ -145,7 +143,7 @@ app.post("/petition", (req, res) => {
             db.addSignature(req.session.id, req.body.url).then((url) => {
                 req.session.signed = true;
                 res.render("thanks", {
-                    url: url.rows[0].url,
+                    url: url.rows[0].signature,
                     name: req.session.name,
                     logged: true,
                 });
@@ -185,11 +183,14 @@ app.post("/edit", (req, res) => {
     if (req.session.id) {
         db.updateProfile(req.session.id, req.body.city, req.body.age).then(
             () => {
-                res.render("edit", {
-                    logged: true,
-                    name: req.session.name,
-                    profile: req.session.profile,
-                    success: true,
+                db.getProfile(req.session.id).then((result) => {
+                    req.session.profile = result.rows[0];
+                    res.render("edit", {
+                        logged: true,
+                        name: req.session.name,
+                        profile: req.session.profile,
+                        success: true,
+                    });
                 });
             }
         );

@@ -4,19 +4,24 @@
 
 
 {{#profile}}
+<form class="form" method="POST">
+<div class="input-container">
+  <label for="first_name">First Name</label>
+  <input name="first_name" class="input" type="text" placeholder="{{first_name}}"/>
+  <label for="last_name">Last Name</label>
+  <input name="last_name" class="input" type="text" placeholder="{{last_name}}"/>
+  <label for="age">Age</label>
+  <input name="age" class="input" type="number" placeholder="{{age}}"/>
+  <label for="city">City</label>
+  <input name="city" class="input" type="text" placeholder="{{city}}"/>
+  <label for="signature">Signature</label>
+  <img src="{{signature}}" name="signature">
+  <button type="text" class="submit">Submit</button>
+  </div>
+<div>
 
-<div class="input-container ic1">Your City:{{city}}</div>
-<div class="input-container ic1">Your Age:{{age}}</div>
+</div>
 
+</form>
 {{/profile}}
 
-<form method="POST">
-<div class="form">
-      <div class="subtitle">Edit</div>
-      <div class="input-container ic1">
-        <input name="city" class="input" type="city" placeholder="City" />
-        <input name="age" class="input" type="number" placeholder="Age" />
-      </div>
-      <button type="text" class="submit">Submit</button>
-    </div>
-    </form>

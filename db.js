@@ -39,7 +39,7 @@ module.exports.addSignature = (id, url) => {
     return db.query(
         `
         INSERT INTO signatures(user_id,signature)
-        VALUES ($1,$2)`,
+        VALUES ($1,$2) RETURNING signature`,
         [id, url]
     );
 };
@@ -72,11 +72,11 @@ module.exports.createProfile = (id, city, age) => {
     );
 };
 
-module.exports.getProfile = (user_id) => {
+module.exports.getProfile = (id) => {
     return db.query(
         `
-        SELECT * FROM profiles where user_id=$1`,
-        [user_id]
+        SELECT profiles.user_id, profiles.city,profiles.age ,users.first_name,users.last_name,password_hash,signatures.signature FROM profiles LEFT OUTER JOIN signatures ON profiles.user_id=signatures.user_id LEFT OUTER JOIN users ON profiles.user_id=users.id WHERE profiles.user_id=$1;`,
+        [id]
     );
 };
 
