@@ -63,3 +63,27 @@ module.exports.authUser = (email, password) => {
         })
         .catch(() => false);
 };
+
+module.exports.createProfile = (id, city, age) => {
+    return db.query(
+        `
+        INSERT INTO profiles(city,age,user_id) VALUES($2,$3,$1)`,
+        [id, city, age]
+    );
+};
+
+module.exports.getProfile = (user_id) => {
+    return db.query(
+        `
+        SELECT * FROM profiles where user_id=$1`,
+        [user_id]
+    );
+};
+
+module.exports.updateProfile = (user_id, city, age) => {
+    return db.query(
+        `
+        UPDATE profiles SET city=$2,age=$3 WHERE user_id=$1`,
+        [user_id, city, age]
+    );
+};

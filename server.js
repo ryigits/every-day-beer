@@ -66,7 +66,6 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/petition", (req, res) => {
-    console.log('%cserver.js line:69 req.session', 'color: #007acc;', req.session);
     if (req.session.id && req.session.signed) {
         res.render("thanks", {
             logged: true,
@@ -113,7 +112,7 @@ app.post("/", (req, res) => {
             .then((result) => {
                 req.session.id = result[0].id;
                 req.session.name = result[0].first_name;
-                res.redirect("/petition");
+                res.redirect("/createProfile");
             })
             .catch((err) => {
                 console.log("database error", err);
@@ -121,6 +120,21 @@ app.post("/", (req, res) => {
                     showDbError: true,
                 });
             });
+    });
+});
+
+app.get("/createProfile", (req, res) => {
+    if (req.session.id) {
+        res.render("createProfile", {
+            logged: true,
+            name: req.session.name,
+        });
+    }
+});
+
+app.post("/createProfile", (req, res) => {
+    db.createProfile(req.session.id, req.body.city, req.body.age).then(() => {
+        res.redirect("/petition");
     });
 });
 
@@ -152,6 +166,34 @@ app.get("/list", (req, res) => {
         });
     }
     res.redirect("/login");
+});
+
+app.get("/edit", (req, res) => {
+    if (req.session.id) {
+        db.getProfile(req.session.id).then((result) => {
+            req.session.profile = result.rows[0];
+            res.render("edit", {
+                logged: true,
+                name: req.session.name,
+                profile: req.session.profile,
+            });
+        });
+    }
+});
+
+app.post("/edit", (req, res) => {
+    if (req.session.id) {
+        db.updateProfile(req.session.id, req.body.city, req.body.age).then(
+            () => {
+                res.render("edit", {
+                    logged: true,
+                    name: req.session.name,
+                    profile: req.session.profile,
+                    success: true,
+                });
+            }
+        );
+    }
 });
 
 app.get("/logout", (req, res) => {

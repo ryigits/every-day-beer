@@ -1,0 +1,22 @@
+{{#if success}}
+<h1>Operation Successfull</h1>
+{{/if}}
+
+
+{{#profile}}
+
+<div class="input-container ic1">Your City:{{city}}</div>
+<div class="input-container ic1">Your Age:{{age}}</div>
+
+{{/profile}}
+
+<form method="POST">
+<div class="form">
+      <div class="subtitle">Edit</div>
+      <div class="input-container ic1">
+        <input name="city" class="input" type="city" placeholder="City" />
+        <input name="age" class="input" type="number" placeholder="Age" />
+      </div>
+      <button type="text" class="submit">Submit</button>
+    </div>
+    </form>
