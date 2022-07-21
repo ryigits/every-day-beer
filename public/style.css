@@ -3,7 +3,7 @@
     box-sizing: border-box;
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
         "Lucida Sans", Arial, sans-serif;
-    margin: 0;
+        margin: 0;
 }
 #sig-canvas {
     display: flex;
@@ -16,8 +16,8 @@
     display: none;
 }
 
-.container {
-    display: grid;
+.container{
+    display:grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 0.1fr 0.05fr 1fr;
     width: 100%;
@@ -25,15 +25,15 @@
 }
 
 .title {
-    grid-column-start: 1;
+    grid-column-start:1;
     grid-column-end: 4;
     place-self: center;
     font-size: 50px;
-    color: darkorange;
+    color:darkorange;
 }
 
 .links {
-    grid-column-start: 1;
+    grid-column-start:1;
     grid-column-end: 3;
     grid-row-start: 2;
     grid-row-end: 3;
@@ -43,28 +43,26 @@
 }
 
 .main {
-    grid-column-start: 2;
+    grid-column-start:2;
     grid-column-end: 3;
     margin-top: 20%;
 }
 
-.links a {
+.links a{
     margin-left: 40px;
     text-decoration: none;
 }
 
-.logged {
-    text-align: center;
-    place-self: center;
-    grid-column-start: 3;
+.logged{
+    place-self:center;
+    grid-column-start:3;
     grid-column-end: 4;
     grid-row-start: 2;
     grid-row-end: 3;
-    color: firebrick;
-    font-size: 20px;
 }
 
-.logged a {
+.logged a{
+    display: absolute;
     text-decoration: none;
     font-size: 10px;
 }
@@ -139,12 +137,6 @@
     background-color: rgb(162, 115, 110);
 }
 
-.list {
+.list{
     font-size: 30px;
-}
-
-.error{
-    font-size: large;
-    color: red;
-    text-decoration: dashed;
 }

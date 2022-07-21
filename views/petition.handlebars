@@ -1,10 +1,5 @@
-{{#unless showDbError}}
 <h3>Thanks for login. Please sign below</h3>
 
  <form method="POST">
  {{>signature}}
  </form>
-{{/unless}}
-{{#if showDbError}}
-<div class="error">Please sign only once</div>
-{{/if}}
