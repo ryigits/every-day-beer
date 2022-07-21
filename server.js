@@ -30,6 +30,14 @@ app.get("/", (req, res) => {
     if (req.session.id) {
         res.redirect("/petition");
     } else {
+        res.redirect("/register");
+    }
+});
+
+app.get("/register", (req, res) => {
+    if (req.session.id) {
+        res.redirect("/petition");
+    } else {
         res.render("home", {
             logged: false,
         });
@@ -52,7 +60,8 @@ app.post("/login", (req, res) => {
                     if (result.rows.length > 0) {
                         req.session.signed = true;
                     }
-                    res.redirect("petition");
+                    console.log("User Logged in", req.session);
+                    res.redirect("/petition");
                 });
             });
         } else {
@@ -75,15 +84,11 @@ app.get("/petition", (req, res) => {
             name: req.session.name,
         });
     } else {
-        res.redirect(302, "/");
+        res.redirect("/");
     }
 });
 
 app.get("/login", (req, res) => {
-    if (req.session.signatureId)
-        return res.render("login", {
-            logAgain: true,
-        });
     if (req.session.signed) {
         return res.render("thanks", {});
     } else {
@@ -91,8 +96,7 @@ app.get("/login", (req, res) => {
     }
 });
 
-app.post("/", (req, res) => {
-    // also register page
+app.post("/register", (req, res) => {
     if (!req.body.fname || !req.body.lname)
         return res.render("home", {
             showBlankError: true,
@@ -153,27 +157,25 @@ app.post("/petition", (req, res) => {
 });
 
 app.get("/list", (req, res) => {
-    if (req.session.id) {
-        return res.redirect(302, "/petition");
-    }
-    if (req.session.signed) {
-        return res.render("list", {
-            list: req.session.list,
+    db.getAllUsers().then((users) => {
+        let list = users.rows;
+        res.render("list", {
+            list: list,
             logged: true,
             name: req.session.name,
         });
-    }
-    res.redirect("/login");
+    });
 });
 
 app.get("/edit", (req, res) => {
     if (req.session.id) {
         db.getProfile(req.session.id).then((result) => {
-            req.session.profile = result.rows[0];
+            let profile = result.rows[0];
+            console.log('%cserver.js line:174 req.session', 'color: #007acc;', req.session);
             res.render("edit", {
                 logged: true,
                 name: req.session.name,
-                profile: req.session.profile,
+                profile: profile,
             });
         });
     }
@@ -181,18 +183,24 @@ app.get("/edit", (req, res) => {
 
 app.post("/edit", (req, res) => {
     if (req.session.id) {
-        db.updateProfile(req.session.id, req.body.city, req.body.age).then(
+        db.updateProfile(req.session.id, req.body.city, req.body.age).then( // UPDATE PROFILE EKLENMELI
             () => {
                 db.getProfile(req.session.id).then((result) => {
-                    req.session.profile = result.rows[0];
+                    let profile = result.rows[0];
                     res.render("edit", {
                         logged: true,
                         name: req.session.name,
-                        profile: req.session.profile,
+                        profile: profile,
                         success: true,
                     });
                 });
             }
+        );
+    } else {
+        console.log(
+            "%cserver.js line:192 req.session",
+            "color: #007acc;",
+            req.session
         );
     }
 });
