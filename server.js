@@ -140,8 +140,8 @@ app.get("/list", (req, res) => {
 app.get("/edit", userLogedIn, (req, res) => {
     db.getProfile(req.session.id).then((result) => {
         let profile = result.rows[0];
-        let signature;
-        if (profile.signature) {
+        let signature = null;
+        if (typeof profile.signature != "undefined") {
             signature = profile.signature;
         }
         res.render("edit", {
@@ -161,20 +161,22 @@ app.post("/edit", userLogedIn, (req, res) => {
         req.body.last_name,
         req.body.age,
         req.body.city
-    ).then(
-        // UPDATE PROFILE EKLENMELI
-        () => {
-            db.getProfile(req.session.id).then((result) => {
-                let profile = result.rows[0];
+    ).then(() => {
+        db.getProfile(req.session.id).then((result) => {
+            let profile = result.rows[0];
+            db.getSignatureById(req.session.id).then((signature) => {
+                console.log('%cserver.js line:168 signature', 'color: #007acc;', signature);
                 res.render("edit", {
                     logged: true,
                     name: req.session.name,
                     profile: profile,
+                    signed: req.session.signed,
+                    signature: signature.rows[0].signature,
                     success: true,
                 });
             });
-        }
-    );
+        });
+    });
 });
 
 app.post("/delete", userLogedIn, (req, res) => {

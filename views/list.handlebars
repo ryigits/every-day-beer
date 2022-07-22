@@ -1,19 +1,16 @@
-
-
+<h1 class="pageTitle">List</h1>
 {{#list}}
-<div class="form">
-<ul>
+<div id="{{id}}">
+<ul class="list">
     <li>
-        {{first_name}}
+        {{first_name}} {{last_name}} , {{age}}
     </li>
     <li>
-        {{last_name}}
-    </li>
-    <li>
-        {{email}}
+        {{city}}
     </li>
 </ul>
 </div>
+<hr>
 {{/list}}
 
 

@@ -1,19 +1,15 @@
-{{#if success}}
-<h1>Operation Successfull</h1>
-{{/if}}
-
-
+<h1 class="pageTitle">Edit Profile</h1>
 {{#profile}}
 <form method="POST">
 <div class="input-container">
   <label for="first_name">First Name</label>
-  <input name="first_name" class="input" type="text" placeholder="{{first_name}}"/>
+  <input name="first_name" class="input" type="text" minlength="3" placeholder="{{first_name}}"/>
   <label for="last_name">Last Name</label>
-  <input name="last_name" class="input" type="text" placeholder="{{last_name}}"/>
+  <input name="last_name" class="input" type="text" minlength="3" placeholder="{{last_name}}"/>
   <label for="age">Age</label>
-  <input name="age" class="input" type="number" placeholder="{{age}}"/>
+  <input name="age" class="input" type="number" min="18" minlength="1" placeholder="{{age}}" />
   <label for="city">City</label>
-  <input name="city" class="input" type="text" placeholder="{{city}}"/>
+  <input name="city" class="input" type="text" minlength="3" placeholder="{{city}}"/>
   {{/profile}}
   {{#if signed}}
   <label for="signature">Signature</label>
@@ -23,12 +19,30 @@
 </div>
 </form>
 
-<div>
+
+<div id="alert"><p >{{#if success}}
+Successfully Completed
+{{/if}}</p></div>
+
+
 {{#if signed}}
+<div >
 <form style="display:none" action="/delete" method="post">
 <input name="delete" style="display:none" value="delete">
 <button type="submit" id="delete"></button>
 </form>
-<label id="delete" class="main" style="text-decoration: underline" for="delete">Delete</label>
+<label  id="delete" class="input" style="text-decoration: underline" for="delete">Delete</label>
 </div>
 {{/if}}
+<script>
+  let submitButton=$(".submit");
+  let alert = $("#alert");
+  submitButton.click(function(e){
+    var emptyTextBoxes = $('input').filter(function() { return this.value == ""; });
+    if(emptyTextBoxes.length > 0){
+     console.log(emptyTextBoxes);
+      alert.text("Please do not leave empty fields")
+      e.preventDefault();
+    };
+  })
+</script>

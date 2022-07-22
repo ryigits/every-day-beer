@@ -4,19 +4,39 @@
         <title>Petition</title>
         <link rel="stylesheet" href="/style.css" />
     </head>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <body>
-<div class="container">
-  <div class="title">not only Friday but also EVERYDAY</div>
-  <div class="links">{{>navbar}}</div>
-  <div class="logged">{{>logged}}</div>
-  <div class="main">{{{body}}}</div>
-</div>
-
-
-
-
+<div class="wrapper">
   
-
-
+  <div class="top">
+    <h1>Need Every Day Beer</h1>
+    <h2>Spiced Academy</h2>
+  </div>
+  
+  <ul class="navigation">
+    {{#unless logged}}
+    <li><a href="/register">Register</a></li>
+    <li><a href="/login" >Login</a></li>
+    {{/unless}}
+ {{#if logged}}   
+ <li><a href="/petition">Petition</a></li>
+    <li><a href="/list">List</a></li>
+    <li><a>Profile</a>
+      <ul>
+        <li><a href="/edit" >Edit Profile</a></li>
+        <li><a href="/logout" >Logout</a></li>
+      </ul>
+    </li>
+    {{/if}}
+    <div class="clear"></div>
+  </ul>
+  
+  <div class="footer">
+    {{{body}}}
+  </div>
+  
+</div>
     </body>
+    
 </html>
+

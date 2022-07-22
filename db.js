@@ -12,7 +12,8 @@ module.exports.addUser = (first_name, last_name, email, password) => {
 };
 
 module.exports.getAllUsers = () => {
-    return db.query(`SELECT * FROM users`);
+    return db.query(`SELECT users.first_name,users.last_name,profiles.city,profiles.age
+FROM users LEFT OUTER JOIN profiles ON users.id=profiles.user_id;`);
 };
 
 module.exports.getUserByEmail = (email) => {
@@ -44,13 +45,6 @@ module.exports.addSignature = (id, url) => {
     );
 };
 
-module.exports.getAllSignatures = () => {
-    return db.query(
-        `
-        SELECT * FROM signatures`
-    );
-};
-
 module.exports.authUser = (email, password) => {
     return db
         .query(
@@ -75,7 +69,7 @@ module.exports.createProfile = (id, city, age) => {
 module.exports.getProfile = (id) => {
     return db.query(
         `
-        SELECT profiles.user_id, profiles.city,profiles.age ,users.first_name,users.last_name,password_hash,signatures.signature FROM profiles LEFT OUTER JOIN signatures ON profiles.user_id=signatures.user_id LEFT OUTER JOIN users ON profiles.user_id=users.id WHERE profiles.user_id=$1;`,
+        SELECT profiles.user_id, profiles.city,profiles.age ,users.first_name,users.last_name,password_hash,signatures.signature FROM users LEFT OUTER JOIN signatures ON users.id=signatures.user_id LEFT OUTER JOIN profiles ON profiles.user_id=users.id WHERE users.id=$1;`,
         [id]
     );
 };
