@@ -140,12 +140,16 @@ app.get("/list", (req, res) => {
 app.get("/edit", userLogedIn, (req, res) => {
     db.getProfile(req.session.id).then((result) => {
         let profile = result.rows[0];
+        let signature;
+        if (profile.signature) {
+            signature = profile.signature;
+        }
         res.render("edit", {
             logged: true,
             signed: req.session.signed,
             name: req.session.name,
             profile: profile,
-            signature: profile.signature,
+            signature: signature,
         });
     });
 });
