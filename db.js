@@ -80,10 +80,26 @@ module.exports.getProfile = (id) => {
     );
 };
 
-module.exports.updateProfile = (user_id, city, age) => {
+module.exports.updateProfile = (user_id, first_name, last_name, age, city) => {
+    return db
+        .query(
+            `
+        UPDATE profiles SET city=$2,age=$3 WHERE user_id=$1`,
+            [user_id, city, age]
+        )
+        .then(() => {
+            db.query(
+                `
+        UPDATE users SET first_name=$2,last_name=$3 WHERE id=$1`,
+                [user_id, first_name, last_name]
+            );
+        });
+};
+
+module.exports.deleteSignature = (id) => {
     return db.query(
         `
-        UPDATE profiles SET city=$2,age=$3 WHERE user_id=$1`,
-        [user_id, city, age]
+        DELETE FROM signatures WHERE user_id=$1`,
+        [id]
     );
 };

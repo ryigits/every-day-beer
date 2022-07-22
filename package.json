@@ -24,6 +24,7 @@
         "moment": "^2.29.4",
         "nodejs-base64-converter": "^1.0.5",
         "spiced-pg": "^1.0.4",
-        "supertest": "^4.0.2"
+        "supertest": "^4.0.2",
+        "zsh": "^0.0.1"
     }
 }

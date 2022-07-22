@@ -14,14 +14,21 @@
   <input name="age" class="input" type="number" placeholder="{{age}}"/>
   <label for="city">City</label>
   <input name="city" class="input" type="text" placeholder="{{city}}"/>
+  {{/profile}}
+  {{#if signed}}
   <label for="signature">Signature</label>
   <img src="{{signature}}" name="signature">
-  <button type="text" class="submit">Submit</button>
-  </div>
-<div>
-
+  {{/if}}
+<button type="text" class="submit">Submit</button>
 </div>
-
 </form>
-{{/profile}}
 
+<div>
+{{#if signed}}
+<form style="display:none" action="/delete" method="post">
+<input name="delete" style="display:none" value="delete">
+<button type="submit" id="delete"></button>
+</form>
+<label id="delete" class="main" style="text-decoration: underline" for="delete">Delete</label>
+</div>
+{{/if}}

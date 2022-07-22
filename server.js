@@ -5,7 +5,7 @@ const hb = require("express-handlebars");
 const db = require("./db");
 const bcrypt = require("./bcrypt");
 app.listen(port, () => console.log(`petition listening on port ${port}!`));
-
+const { userLogedIn, userLogedOut, userUnsigned } = require("./middleware");
 const cookieSession = require("cookie-session");
 app.use(
     cookieSession({
@@ -16,7 +16,6 @@ app.use(
 );
 
 app.use(express.static("./public"));
-app.use(express.static("./public"));
 app.engine("handlebars", hb.engine());
 app.set("view engine", "handlebars");
 
@@ -26,25 +25,17 @@ app.use(
     })
 );
 
-app.get("/", (req, res) => {
-    if (req.session.id) {
-        res.redirect("/petition");
-    } else {
-        res.redirect("/register");
-    }
+app.get("/", userLogedIn, (req, res) => {
+    res.redirect("/petition");
 });
 
-app.get("/register", (req, res) => {
-    if (req.session.id) {
-        res.redirect("/petition");
-    } else {
-        res.render("home", {
-            logged: false,
-        });
-    }
+app.get("/register", userLogedOut, (req, res) => {
+    res.render("home", {
+        logged: false,
+    });
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", userLogedOut, (req, res) => {
     // login page
     if (!req.body.email || !req.body.password) {
         return res.render("login", {
@@ -64,36 +55,19 @@ app.post("/login", (req, res) => {
                     res.redirect("/petition");
                 });
             });
-        } else {
-            res.render("login", {
-                doesNotMatch: true,
-            });
         }
     });
 });
 
-app.get("/petition", (req, res) => {
-    if (req.session.id && req.session.signed) {
-        res.render("thanks", {
-            logged: true,
-            name: req.session.name,
-        });
-    } else if (req.session.id) {
-        res.render("petition", {
-            logged: true,
-            name: req.session.name,
-        });
-    } else {
-        res.redirect("/");
-    }
+app.get("/petition", userLogedIn, userUnsigned, (req, res) => {
+    res.render("petition", {
+        logged: true,
+        name: req.session.name,
+    });
 });
 
-app.get("/login", (req, res) => {
-    if (req.session.signed) {
-        return res.render("thanks", {});
-    } else {
-        return res.render("login", {});
-    }
+app.get("/login", userLogedOut, (req, res) => {
+    return res.render("login", {});
 });
 
 app.post("/register", (req, res) => {
@@ -125,35 +99,31 @@ app.post("/register", (req, res) => {
     });
 });
 
-app.get("/createProfile", (req, res) => {
-    if (req.session.id) {
-        res.render("createProfile", {
-            logged: true,
-            name: req.session.name,
-        });
-    }
-});
-
-app.post("/createProfile", (req, res) => {
-    db.createProfile(req.session.id, req.body.city, req.body.age).then(() => {
-        res.redirect("/petition");
+app.get("/createProfile", userLogedIn, (req, res) => {
+    res.render("createProfile", {
+        logged: true,
+        name: req.session.name,
     });
 });
 
-app.post("/petition", (req, res) => {
+app.post("/createProfile", userLogedIn, (req, res) => {
+    db.createProfile(req.session.id, req.body.city, req.body.age).then(() => {
+        return res.redirect("/petition");
+    });
+});
+
+app.post("/petition", userLogedIn, userUnsigned, (req, res) => {
     // add signature page
-    if (req.session.id && !req.session.signed) {
-        setTimeout(() => {
-            db.addSignature(req.session.id, req.body.url).then((url) => {
-                req.session.signed = true;
-                res.render("thanks", {
-                    url: url.rows[0].signature,
-                    name: req.session.name,
-                    logged: true,
-                });
+    setTimeout(() => {
+        db.addSignature(req.session.id, req.body.url).then((url) => {
+            req.session.signed = true;
+            res.render("thanks", {
+                url: url.rows[0].signature,
+                name: req.session.name,
+                logged: true,
             });
-        }, 500);
-    }
+        });
+    }, 500);
 });
 
 app.get("/list", (req, res) => {
@@ -167,41 +137,48 @@ app.get("/list", (req, res) => {
     });
 });
 
-app.get("/edit", (req, res) => {
-    if (req.session.id) {
-        db.getProfile(req.session.id).then((result) => {
-            let profile = result.rows[0];
-            console.log('%cserver.js line:174 req.session', 'color: #007acc;', req.session);
-            res.render("edit", {
-                logged: true,
-                name: req.session.name,
-                profile: profile,
-            });
+app.get("/edit", userLogedIn, (req, res) => {
+    db.getProfile(req.session.id).then((result) => {
+        let profile = result.rows[0];
+        res.render("edit", {
+            logged: true,
+            signed: req.session.signed,
+            name: req.session.name,
+            profile: profile,
+            signature: profile.signature,
         });
-    }
+    });
 });
 
-app.post("/edit", (req, res) => {
-    if (req.session.id) {
-        db.updateProfile(req.session.id, req.body.city, req.body.age).then( // UPDATE PROFILE EKLENMELI
-            () => {
-                db.getProfile(req.session.id).then((result) => {
-                    let profile = result.rows[0];
-                    res.render("edit", {
-                        logged: true,
-                        name: req.session.name,
-                        profile: profile,
-                        success: true,
-                    });
+app.post("/edit", userLogedIn, (req, res) => {
+    db.updateProfile(
+        req.session.id,
+        req.body.first_name,
+        req.body.last_name,
+        req.body.age,
+        req.body.city
+    ).then(
+        // UPDATE PROFILE EKLENMELI
+        () => {
+            db.getProfile(req.session.id).then((result) => {
+                let profile = result.rows[0];
+                res.render("edit", {
+                    logged: true,
+                    name: req.session.name,
+                    profile: profile,
+                    success: true,
                 });
-            }
-        );
-    } else {
-        console.log(
-            "%cserver.js line:192 req.session",
-            "color: #007acc;",
-            req.session
-        );
+            });
+        }
+    );
+});
+
+app.post("/delete", userLogedIn, (req, res) => {
+    if (req.body.delete) {
+        return db.deleteSignature(req.session.id).then(() => {
+            req.session.signed = false;
+            res.redirect("/edit");
+        });
     }
 });
 
