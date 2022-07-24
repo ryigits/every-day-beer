@@ -1,8 +1,19 @@
+let databaseUrl;
+if (process.env.NODE_ENV === "production") {
+    databaseUrl = process.env.DATABASE_URL;
+} else {
+    const {
+        DB_USER,
+        DB_PASSWORD,
+        DB_HOST,
+        DB_PORT,
+        DB_NAME,
+    } = require("./secrets.json");
+    databaseUrl = `postgres:${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+}
 const spicedPg = require("spiced-pg");
-const db = spicedPg(dbUrl);
-var dbUrl =
-    process.env.DATABASE_URL ||
-    "postgres:postgres:postgres@localhost:5432/ryigit";
+const db = spicedPg(databaseUrl);
+
 const bcrypt = require("./bcrypt");
 
 module.exports.addUser = (first_name, last_name, email, password) => {

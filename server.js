@@ -1,15 +1,16 @@
 const express = require("express");
 const app = express();
-const port = 8080;
+const port = process.env.PORT || 8080;
 const hb = require("express-handlebars");
 const db = require("./db");
-
+const COOKIE_SECRET =
+    process.env.COOKIE_SECRET || require("./secrets.json").COOKIE_SECRET;
 app.listen(process.env.PORT || port, () => console.log(`petition listening on port ${port}!`));
 const { userLogedIn} = require("./middleware");
 const cookieSession = require("cookie-session");
 app.use(
     cookieSession({
-        secret: `Hungry`,
+        secret: COOKIE_SECRET,
         maxAge: 1000 * 60 * 60 * 24 * 14,
         sameSite: true,
     })
@@ -19,6 +20,13 @@ app.use(
         extended: false,
     })
 );
+let sessionSecret = process.env.SESSION_SECRET;
+
+if (!sessionSecret) {
+    sessionSecret = require("./secrets").SESSION_SECRET;
+}
+
+
 const register = require("./routers/register");
 const login = require("./routers/login");
 const petition = require("./routers/petition");
