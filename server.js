@@ -6,6 +6,14 @@ const db = require("./db");
 const COOKIE_SECRET =
     process.env.COOKIE_SECRET || require("./secrets.json").COOKIE_SECRET;
 app.listen(process.env.PORT || port, () => console.log(`petition listening on port ${port}!`));
+if (process.env.NODE_ENV == "production") {
+    app.use((req, res, next) => {
+        if (req.headers["x-forwarded-proto"].startsWith("https")) {
+            return next();
+        }
+        res.redirect(`https://${req.hostname}${req.url}`);
+    });
+}
 const { userLogedIn} = require("./middleware");
 const cookieSession = require("cookie-session");
 app.use(
