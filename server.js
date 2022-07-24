@@ -17,7 +17,7 @@ if (!sessionSecret) {
 if (process.env.NODE_ENV == "production") {
     sessionSecret = process.env.SESSION_SECRET;
 } else {
-    sessionSecret = require("./secrets").SESSION_SECRET;
+    sessionSecret = require("./secrets.json").SESSION_SECRET;
 }
 
 if (process.env.NODE_ENV == "production") {
