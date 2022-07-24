@@ -2,7 +2,11 @@ const router = require("express").Router();
 const db = require("../db");
 const { userLogedIn } = require("../middleware");
 
-router.get("/deleteUser", userLogedIn, (req, res) => {});
+router.get("/deleteUser", (req, res) => {
+    res.render("deleteUser", {
+        name: req.session.name,
+    });
+});
 
 router.post("/deleteUser", userLogedIn, (req, res) => {
     if (req.body.delete) {
@@ -12,6 +16,7 @@ router.post("/deleteUser", userLogedIn, (req, res) => {
         });
     } else {
         db.deleteUser(req.session.id).then(() => {
+            req.session = null;
             res.render("deleteUser", {
                 success: true,
             });

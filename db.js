@@ -3,12 +3,20 @@ const db = spicedPg("postgres:postgres:postgres@localhost:5432/ryigit");
 const bcrypt = require("./bcrypt");
 
 module.exports.addUser = (first_name, last_name, email, password) => {
-    return db.query(
-        `
+    return db
+        .query(
+            `
         INSERT INTO users(first_name,last_name,email,password_hash)
         VALUES ($1,$2,$3,$4)  RETURNING id,first_name`,
-        [first_name, last_name, email, password]
-    );
+            [first_name, last_name, email, password]
+        )
+        .then((returning) => {
+            let id = returning.rows[0].id;
+            return db.query(
+                `INSERT INTO profiles(city,age,user_id) VALUES (DEFAULT,DEFAULT,$1)`,
+                [id]
+            );
+        });
 };
 
 module.exports.getAllUsers = () => {
@@ -58,13 +66,13 @@ module.exports.authUser = (email, password) => {
         .catch(() => false);
 };
 
-module.exports.createProfile = (id, city, age) => {
-    return db.query(
-        `
-        INSERT INTO profiles(city,age,user_id) VALUES($2,$3,$1)`,
-        [id, city, age]
-    );
-};
+// module.exports.createProfile = (id, city, age) => {
+//     return db.query(
+//         `
+//         INSERT INTO profiles(city,age,user_id) VALUES($2,$3,$1)`,
+//         [id, city, age]
+//     );
+// };
 
 module.exports.getProfile = (id) => {
     return db.query(
@@ -75,11 +83,13 @@ module.exports.getProfile = (id) => {
 };
 
 module.exports.updateProfile = (user_id, first_name, last_name, age, city) => {
+    let capitalizeCity =
+        city.charAt(0).toUpperCase() + city.slice(1).toLowerCase();
     return db
         .query(
             `
-        UPDATE profiles SET city=$2,age=$3 WHERE user_id=$1`,
-            [user_id, city, age]
+        INSERT INTO profiles(city,age,user_id) values($2,$3,$1) ON CONFLICT(user_id) DO UPDATE SET city=$2,age=$3;`,
+            [user_id, capitalizeCity, age]
         )
         .then(() => {
             db.query(
@@ -98,11 +108,10 @@ module.exports.deleteSignature = (id) => {
     );
 };
 
-
 module.exports.deleteUser = (id) => {
     return db.query(
         `
-        DELETE FROM users,signatures,profiles WHERE id=$1,signatures.user_id=$1,profiles.user_id=$1`,
+        DELETE FROM users WHERE id=$1`,
         [id]
     );
 };

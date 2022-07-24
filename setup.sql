@@ -14,19 +14,15 @@ CREATE TABLE users (
 
 CREATE TABLE signatures (
     id        SERIAL PRIMARY KEY,
-    user_id   INTEGER NOT NULL UNIQUE REFERENCES users (id),
+    user_id   INTEGER NOT NULL UNIQUE REFERENCES users (id)ON DELETE CASCADE,
     signature TEXT    NOT NULL CHECK (signature != ''),
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE profiles (
     id  SERIAL PRIMARY KEY,
-    url VARCHAR,
-    city VARCHAR,
-    age INT,
-    user_id INTEGER NOT NULL UNIQUE REFERENCES users(id),
+    city TEXT DEFAULT NULL,
+    age INT DEFAULT NULL,
+    user_id INTEGER NOT NULL UNIQUE REFERENCES users(id)ON DELETE CASCADE,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-
-
-SELECT profiles.user_id, profiles.city,profiles.age ,users.first_name,users.last_name,password_hash,signatures.signature FROM profiles LEFT OUTER JOIN signatures ON profiles.user_id=signatures.user_id LEFT OUTER JOIN users ON profiles.user_id=users.id WHERE profiles.user_id=1;
+);
