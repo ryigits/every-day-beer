@@ -49,7 +49,7 @@ body {
 }
 
 .footer {
-    min-height: 500px;
+    min-height: 485px;
     padding: 20px;
     background: #e4e4e4;
     border-radius: 0 0 10px 10px;
@@ -224,9 +224,9 @@ body {
 
 #delete{
     position:relative;
-    bottom:130px;
-    left:-18px;
+    z-index: 10;
     font-size: 15px;
+    bottom: -250px;
 }
 
 .list{
@@ -241,10 +241,11 @@ body {
 }
 
 #alert {
-    margin-top: 410px;
+    position: absolute;
     font-style: oblique;
     color: firebrick;
     max-height: 3px;
+    top:220px;
 }
 
 #skip{

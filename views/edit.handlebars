@@ -7,9 +7,9 @@
   <label for="last_name">Last Name</label>
   <input name="last_name" class="input" type="text" minlength="3" placeholder="{{last_name}}"/>
   <label for="age">Age</label>
-  <input name="age" class="input" type="number" min="18" minlength="1" placeholder="{{age}}" />
+  <input name="age" id="emptyInput" class="input" type="number" min="18" minlength="1" placeholder="{{age}}" />
   <label for="city">City</label>
-  <input name="city" class="input" type="text" minlength="3" placeholder="{{city}}"/>
+  <input name="city" id="emptyInput" class="input" type="text" minlength="3" placeholder="{{city}}"/>
   {{/profile}}
   {{#if signed}}
   <label for="signature">Signature</label>
@@ -38,7 +38,7 @@ Successfully Completed
   let submitButton=$(".submit");
   let alert = $("#alert");
   submitButton.click(function(e){
-    var emptyTextBoxes = $('input').filter(function() { return this.value == ""; });
+    var emptyTextBoxes = $('#emptyInput').filter(function() { return this.value == ""; });
     if(emptyTextBoxes.length > 0){
      console.log(emptyTextBoxes);
       alert.text("Please do not leave empty fields")

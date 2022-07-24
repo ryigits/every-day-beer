@@ -106,11 +106,14 @@ module.exports.updateProfile = (user_id, first_name, last_name, age, city) => {
             [user_id, capitalizeCity, age]
         )
         .then(() => {
-            db.query(
-                `
+            if (first_name != "" && last_name != "") {
+                // sadece soyad veya ad guncellenmesi eklenmeli
+                db.query(
+                    `
         UPDATE users SET first_name=$2,last_name=$3 WHERE id=$1`,
-                [user_id, first_name, last_name]
-            );
+                    [user_id, first_name, last_name]
+                );
+            }
         });
 };
 

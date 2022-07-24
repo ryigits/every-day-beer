@@ -24,7 +24,6 @@ router.post("/changePassword", userLogedIn, (req, res) => {
         });
     } else {
         res.render("changePassword", {
-            name: req.session.name,
             doesNotMatch: true,
             logged: true,
         });

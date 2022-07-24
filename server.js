@@ -28,12 +28,12 @@ if (process.env.NODE_ENV == "production") {
         res.redirect(`https://${req.hostname}${req.url}`);
     });
 }
-const { userLogedIn } = require("./middleware");
+
 const cookieSession = require("cookie-session");
 app.use(
     cookieSession({
         secret: COOKIE_SECRET,
-        maxAge: 1000 * 60 * 60 * 24 * 14,
+        maxAge: 1000 * 60 * 60 * 24,
         sameSite: true,
     })
 );
@@ -60,8 +60,8 @@ app.use(express.static("./public"));
 app.engine("handlebars", hb.engine());
 app.set("view engine", "handlebars");
 
-app.get("/", userLogedIn, (req, res) => {
-    res.redirect("/petition");
+app.get("/", (req, res) => {
+    res.redirect("/register");
 });
 
 app.get("/list", (req, res) => {
