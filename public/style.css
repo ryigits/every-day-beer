@@ -244,8 +244,8 @@ body {
     position: absolute;
     font-style: oblique;
     color: firebrick;
-    max-height: 3px;
-    top:220px;
+    max-height: 5px;
+    top:210px;
 }
 
 #skip{
@@ -256,4 +256,12 @@ body {
 #error{
     color: firebrick;
     font-style: oblique;
+}
+
+.cityList{
+    text-decoration: none;
+}
+
+.cityList:hover{
+    text-decoration:underline
 }

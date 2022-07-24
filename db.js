@@ -140,3 +140,21 @@ module.exports.changePassword = (id, newPassword_hash) => {
         [id, newPassword_hash]
     );
 };
+
+module.exports.selectUsersFromCity = (city) => {
+    let capitalizeCity =
+        city.charAt(0).toUpperCase() + city.slice(1).toLowerCase();
+    return db.query(
+        `
+        SELECT profiles.user_id, profiles.city,profiles.age,users.first_name,users.last_name FROM profiles FULL OUTER JOIN users ON profiles.user_id=users.id WHERE profiles.city=$1;`,
+        [capitalizeCity]
+    );
+};
+
+module.exports.selectUsersFromAge = (age) => {
+    return db.query(
+        `
+        SELECT profiles.user_id, profiles.city,profiles.age,users.first_name,users.last_name FROM profiles FULL OUTER JOIN users ON profiles.user_id=users.id WHERE profiles.age=$1;`,
+        [age]
+    );
+};

@@ -13,7 +13,7 @@ router.get("/changePassword", userLogedIn, (req, res) => {
 
 router.post("/changePassword", userLogedIn, (req, res) => {
     const { password, rePassword } = req.body;
-    if (password === rePassword) {
+    if (password === rePassword && password != "") {
         bcrypt.hash(password).then((newPassword_hash) => {
             db.changePassword(req.session.id, newPassword_hash).then(() => {
                 res.render("changePassword", {

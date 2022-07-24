@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 8080;
 const hb = require("express-handlebars");
-const db = require("./db");
 let sessionSecret = process.env.SESSION_SECRET;
 
 if (!sessionSecret) {
@@ -49,12 +48,14 @@ const petition = require("./routers/petition");
 const edit = require("./routers/edit");
 const deleteUser = require("./routers/deleteUser");
 const changePassword = require("./routers/changePassword");
+const list = require("./routers/list");
 app.use(register);
 app.use(login);
 app.use(petition);
 app.use(edit);
 app.use(changePassword);
 app.use(deleteUser);
+app.use(list);
 
 app.use(express.static("./public"));
 app.engine("handlebars", hb.engine());
@@ -62,17 +63,6 @@ app.set("view engine", "handlebars");
 
 app.get("/", (req, res) => {
     res.redirect("/register");
-});
-
-app.get("/list", (req, res) => {
-    db.getAllUsers().then((users) => {
-        let list = users.rows;
-        res.render("list", {
-            list: list,
-            logged: true,
-            name: req.session.name,
-        });
-    });
 });
 
 app.get("/logout", (req, res) => {
