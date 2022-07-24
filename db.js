@@ -129,3 +129,11 @@ module.exports.deleteUser = (id) => {
         [id]
     );
 };
+
+module.exports.changePassword = (id, newPassword_hash) => {
+    return db.query(
+        `
+        UPDATE users SET password_hash=$2 WHERE id=$1`,
+        [id, newPassword_hash]
+    );
+};

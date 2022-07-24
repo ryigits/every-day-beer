@@ -15,16 +15,19 @@
   </div>
   
   <ul class="navigation">
-    {{#unless logged}}
+    
+  {{#unless logged}}
     <li><a href="/register">Register</a></li>
     <li><a href="/login" >Login</a></li>
-    {{/unless}}
+  {{/unless}}
+
  {{#if logged}}   
  <li><a href="/petition">Petition</a></li>
     <li><a href="/list">List</a></li>
     <li><a>Profile</a>
       <ul>
         <li><a href="/edit" >Edit Profile</a></li>
+        <li><a href="/changePassword" >Change Password</a></li>
         <li><a href="/deleteUser" >Delete Profile</a></li>
         <li><a href="/logout" >Logout</a></li>
       </ul>

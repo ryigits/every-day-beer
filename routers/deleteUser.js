@@ -2,8 +2,9 @@ const router = require("express").Router();
 const db = require("../db");
 const { userLogedIn } = require("../middleware");
 
-router.get("/deleteUser", (req, res) => {
+router.get("/deleteUser", userLogedIn, (req, res) => {
     res.render("deleteUser", {
+        logged:true,
         name: req.session.name,
     });
 });

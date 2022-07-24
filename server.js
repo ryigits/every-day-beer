@@ -3,11 +3,6 @@ const app = express();
 const port = process.env.PORT || 8080;
 const hb = require("express-handlebars");
 const db = require("./db");
-
-const COOKIE_SECRET =
-    process.env.COOKIE_SECRET || require("./secrets.json").COOKIE_SECRET;
-app.listen(process.env.PORT || port, () => console.log(`petition listening on port ${port}!`));
-
 let sessionSecret = process.env.SESSION_SECRET;
 
 if (!sessionSecret) {
@@ -19,6 +14,11 @@ if (process.env.NODE_ENV == "production") {
 } else {
     sessionSecret = require("./secrets.json").SESSION_SECRET;
 }
+const COOKIE_SECRET =
+    process.env.COOKIE_SECRET || require("./secrets.json").COOKIE_SECRET;
+app.listen(process.env.PORT || port, () =>
+    console.log(`petition listening on port ${port}!`)
+);
 
 if (process.env.NODE_ENV == "production") {
     app.use((req, res, next) => {
@@ -28,7 +28,7 @@ if (process.env.NODE_ENV == "production") {
         res.redirect(`https://${req.hostname}${req.url}`);
     });
 }
-const { userLogedIn} = require("./middleware");
+const { userLogedIn } = require("./middleware");
 const cookieSession = require("cookie-session");
 app.use(
     cookieSession({
@@ -43,19 +43,19 @@ app.use(
     })
 );
 
-
-
-
 const register = require("./routers/register");
 const login = require("./routers/login");
 const petition = require("./routers/petition");
 const edit = require("./routers/edit");
 const deleteUser = require("./routers/deleteUser");
+const changePassword = require("./routers/changePassword");
 app.use(register);
 app.use(login);
 app.use(petition);
 app.use(edit);
+app.use(changePassword);
 app.use(deleteUser);
+
 app.use(express.static("./public"));
 app.engine("handlebars", hb.engine());
 app.set("view engine", "handlebars");
