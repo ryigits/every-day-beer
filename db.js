@@ -1,5 +1,8 @@
 const spicedPg = require("spiced-pg");
-const db = spicedPg("postgres:postgres:postgres@localhost:5432/ryigit");
+const db = spicedPg(dbUrl);
+var dbUrl =
+    process.env.DATABASE_URL ||
+    "postgres:postgres:postgres@localhost:5432/ryigit";
 const bcrypt = require("./bcrypt");
 
 module.exports.addUser = (first_name, last_name, email, password) => {

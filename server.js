@@ -4,7 +4,7 @@ const port = 8080;
 const hb = require("express-handlebars");
 const db = require("./db");
 
-app.listen(port, () => console.log(`petition listening on port ${port}!`));
+app.listen(process.env.PORT || port, () => console.log(`petition listening on port ${port}!`));
 const { userLogedIn} = require("./middleware");
 const cookieSession = require("cookie-session");
 app.use(
