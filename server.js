@@ -3,9 +3,23 @@ const app = express();
 const port = process.env.PORT || 8080;
 const hb = require("express-handlebars");
 const db = require("./db");
+
 const COOKIE_SECRET =
     process.env.COOKIE_SECRET || require("./secrets.json").COOKIE_SECRET;
 app.listen(process.env.PORT || port, () => console.log(`petition listening on port ${port}!`));
+
+let sessionSecret = process.env.SESSION_SECRET;
+
+if (!sessionSecret) {
+    sessionSecret = require("./secrets.json").SESSION_SECRET;
+}
+
+if (process.env.NODE_ENV == "production") {
+    sessionSecret = process.env.SESSION_SECRET;
+} else {
+    sessionSecret = require("./secrets").SESSION_SECRET;
+}
+
 if (process.env.NODE_ENV == "production") {
     app.use((req, res, next) => {
         if (req.headers["x-forwarded-proto"].startsWith("https")) {
@@ -28,11 +42,8 @@ app.use(
         extended: false,
     })
 );
-let sessionSecret = process.env.SESSION_SECRET;
 
-if (!sessionSecret) {
-    sessionSecret = require("./secrets").SESSION_SECRET;
-}
+
 
 
 const register = require("./routers/register");
