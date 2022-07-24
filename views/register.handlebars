@@ -1,0 +1,16 @@
+<form class="form" method="POST">
+  <div class="subtitle">Please Fill</div>
+  <div class="input-container ic1">
+  <input type="email" placeholder="E-Mail" id="email" class="input" name="email"><br>
+  <input type="text" placeholder="First Name" id="fname" class="input" name="fname">
+  <input type="text" placeholder="Last Name" id="lname" class="input" name="lname">
+  <button class="submit" id="btn">Register</button>
+   </div>
+ </form>
+
+
+
+{{#if showDbError}}
+  <h3 id="dberror">Err:database error</h3>
+{{/if}}
+

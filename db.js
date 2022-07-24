@@ -97,3 +97,12 @@ module.exports.deleteSignature = (id) => {
         [id]
     );
 };
+
+
+module.exports.deleteUser = (id) => {
+    return db.query(
+        `
+        DELETE FROM users,signatures,profiles WHERE id=$1,signatures.user_id=$1,profiles.user_id=$1`,
+        [id]
+    );
+};

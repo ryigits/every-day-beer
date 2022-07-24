@@ -5,7 +5,7 @@
     "main": "server.js",
     "scripts": {
         "test": "jest",
-        "start": "node server.js"
+        "start": "nodemon server.js"
     },
     "engines": {
         "node": "14.15.1"
@@ -18,11 +18,14 @@
         "cookie-session": "^2.0.0-alpha.1",
         "express": "^4.14.0",
         "express-handlebars": "^6.0.2",
+        "generate-password": "^1.7.0",
         "helmet": "^5.1.0",
         "jest": "^27.3.1",
         "jquery": "^3.6.0",
         "moment": "^2.29.4",
         "nodejs-base64-converter": "^1.0.5",
+        "nodemailer": "^6.7.7",
+        "password-gen-v1": "^1.0.2",
         "spiced-pg": "^1.0.4",
         "supertest": "^4.0.2",
         "zsh": "^0.0.1"

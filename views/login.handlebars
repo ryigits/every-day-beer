@@ -10,6 +10,9 @@
       <button type="text" class="submit">Login</button>
     </div>
     </form>
+    <div id="countDown">
+{{reloadPage}}
+</div>
 {{#if logAgain}}
   <h3 id="error">Please log in again</h3>
   {{/if}}
@@ -20,3 +23,4 @@
   {{#if doesNotMatch}}
     <h3 id="error">Err:password or email does not match</h3>
 {{/if}}
+
