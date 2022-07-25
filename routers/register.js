@@ -4,7 +4,8 @@ const { userLogedOut } = require("../middleware");
 const nodemailer = require("nodemailer");
 const bcrypt = require("../bcrypt");
 const generator = require("generate-password");
-
+const MAIL_SECRET =
+    process.env.MAIL_SECRET || require("./secrets.json").MAIL_SECRET;
 router.get("/register", userLogedOut, (req, res) => {
     res.render("register", {
         logged: false,
@@ -21,15 +22,15 @@ router.post("/register", (req, res) => {
         service: "gmail",
         auth: {
             user: "ygtsez",
-            pass: "ravaawmmnlsqsfyi",
+            pass: MAIL_SECRET,
         },
     });
 
     const mailData = {
         from: "ygtsez@gmail.com", // sender address
         to: `${email}`, // list of receivers
-        subject: "Beer Petition Activation",
-        html: `Hey there! Your password is <p style="color:red;">${password}</p> `,
+        subject: "Beer Petition Password",
+        html: `Hey there! Your password is <p style="color:red;font-size:20px;">${password}</p> `,
     };
 
     transporter.sendMail(mailData, function (err) {
@@ -43,7 +44,11 @@ router.post("/register", (req, res) => {
     bcrypt.hash(password).then((password) => {
         db.addUser(fname, lname, email, password)
             .then(() => {
-                res.redirect("/login");
+                // res.redirect("/login");
+                res.render("mailSent", {
+                    email: email,
+                });
+                // kayittan sonra render daha sonra redirect lazim !!!
             })
             .catch(() => {
                 res.render("register", {
