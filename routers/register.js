@@ -5,7 +5,9 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("../bcrypt");
 const generator = require("generate-password");
 const MAIL_SECRET =
-    process.env.MAIL_SECRET || require("./secrets.json").MAIL_SECRET;
+    process.env.MAIL_SECRET || require("../secrets.json").MAIL_SECRET;
+
+
 router.get("/register", userLogedOut, (req, res) => {
     res.render("register", {
         logged: false,
@@ -57,32 +59,6 @@ router.post("/register", (req, res) => {
             });
     });
 
-    // const { fname, lname, password, rePassword, email } = req.body;
-    // if (!fname || !lname)
-    //     return res.render("home", {
-    //         showBlankError: true,
-    //     });
-    // if (password != rePassword)
-    //     return res.render("home", {
-    //         showPasswordError: true,
-    //     });
-    // bcrypt.hash(password).then((password) => {
-    //     db.addUser(fname, lname, email, password)
-    //         .then((result) => {
-    //             return result.rows;
-    //         })
-    //         .then((result) => {
-    //             req.session.id = result[0].id;
-    //             req.session.name = result[0].first_name;
-    //             res.redirect("/createProfile");
-    //         })
-    //         .catch((err) => {
-    //             console.log("database error", err);
-    //             res.render("home", {
-    //                 showDbError: true,
-    //             });
-    //         });
-    // });
 });
 
 module.exports = router;

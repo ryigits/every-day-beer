@@ -1,5 +1,6 @@
 <form class="form" method="POST">
-  <div class="subtitle">Please Fill</div>
+  <div class="subtitle">Please let me know ,<br> Who are you?</div>
+  
   <div class="input-container ic1">
   <input type="email" placeholder="E-Mail" id="email" class="input" name="email"><br>
   <input type="text" placeholder="First Name" id="fname" class="input" name="fname">
@@ -7,10 +8,9 @@
   <button class="submit" id="btn">Register</button>
    </div>
  </form>
-
-
+<div id="registerLogin">Hey!I know you,<a style="text-decoration: none;" href="/login">log in</a></div>
 
 {{#if showDbError}}
-  <h3 id="dberror">Err:email is already in use</h3>
+  <h3 id="dbError">Err: email is already in use</h3>
 {{/if}}
 

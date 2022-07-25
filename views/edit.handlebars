@@ -7,13 +7,13 @@
   <label for="last_name">Last Name</label>
   <input name="last_name" class="input" type="text" minlength="3" placeholder="{{last_name}}"/>
   <label for="age">Age</label>
-  <input name="age" id="emptyInput" class="input" type="number" min="18" minlength="1" placeholder="{{age}}" />
+  <input name="age" id="emptyInput" class="input" type="number" min="18" max="99" minlength="1" placeholder="{{age}}" />
   <label for="city">City</label>
   <input name="city" id="emptyInput" class="input" type="text" minlength="3" placeholder="{{city}}"/>
   {{/profile}}
   {{#if signed}}
   <label for="signature">Signature</label>
-  <img src="{{signature}}" name="signature">
+  <img src="{{signature}}" height="110px" name="signature">
   {{/if}}
 <button type="text" class="submit">Change</button>
 </div>
@@ -40,7 +40,6 @@ Successfully Changed
   submitButton.click(function(e){
     var emptyTextBoxes = $('#emptyInput').filter(function() { return this.value == ""; });
     if(emptyTextBoxes.length > 0){
-     console.log(emptyTextBoxes);
       alert.text("Please do not leave empty fields")
       e.preventDefault();
     };
