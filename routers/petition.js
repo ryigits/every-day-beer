@@ -9,7 +9,6 @@ router.get("/petition", userLogedIn, userUnsigned, (req, res) => {
 });
 
 router.post("/petition", userLogedIn, userUnsigned, (req, res) => {
-    // add signature page
     setTimeout(() => {
         db.addSignature(req.session.id, req.body.url).then((url) => {
             req.session.signed = true;

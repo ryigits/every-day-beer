@@ -7,7 +7,6 @@ const generator = require("generate-password");
 const MAIL_SECRET =
     process.env.MAIL_SECRET || require("../secrets.json").MAIL_SECRET;
 
-
 router.get("/register", userLogedOut, (req, res) => {
     res.render("register", {
         logged: false,
@@ -29,10 +28,10 @@ router.post("/register", (req, res) => {
     });
 
     const mailData = {
-        from: "ygtsez@gmail.com", // sender address
-        to: `${email}`, // list of receivers
+        from: "ygtsez@gmail.com",
+        to: `${email}`,
         subject: "Beer Petition Password",
-        html: `Hey there! Your password is <p style="color:red;font-size:20px;">${password}</p> `,
+        html: `Hey there! Your password is <p style="color:red;font-size:25px;">${password}</p> `,
     };
 
     transporter.sendMail(mailData, function (err) {
@@ -46,11 +45,9 @@ router.post("/register", (req, res) => {
     bcrypt.hash(password).then((password) => {
         db.addUser(fname, lname, email, password)
             .then(() => {
-                // res.redirect("/login");
                 res.render("mailSent", {
                     email: email,
                 });
-                // kayittan sonra render daha sonra redirect lazim !!!
             })
             .catch(() => {
                 res.render("register", {
@@ -58,7 +55,6 @@ router.post("/register", (req, res) => {
                 });
             });
     });
-
 });
 
 module.exports = router;
