@@ -64,7 +64,6 @@ app.set("view engine", "handlebars");
 app.get("/", (req, res) => {
     res.redirect("/register");
 });
-// kayittan sonra redirect lazim !!!
 
 
 app.get("/logout", (req, res) => {
