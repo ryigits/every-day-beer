@@ -6,6 +6,7 @@ router.get("/list", userLogedIn, (req, res) => {
     db.getAllUsers().then((users) => {
         let list = users.rows;
         res.render("list", {
+            totalNumber: list.length,
             list: list,
             logged: true,
             name: req.session.name,
@@ -24,6 +25,5 @@ router.get("/list/:city", userLogedIn, (req, res) => {
         });
     });
 });
-
 
 module.exports = router;
